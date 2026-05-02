@@ -1,6 +1,8 @@
-from datetime import datetime
+import os
 
 def registrar_log(mensaje):
-    with open("logs.txt", "a", encoding="utf-8") as f:
-        fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        f.write(f"[{fecha}] {mensaje}\n")
+    ruta = os.path.join(os.getcwd(), "logs.txt")
+    with open(ruta, "a", encoding="utf-8") as archivo:
+        archivo.write(mensaje + "\n")
+    print(f"[LOG GUARDADO EN]: {ruta}")
+    print(mensaje)
