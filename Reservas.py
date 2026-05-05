@@ -3,7 +3,7 @@ from logger import registrar_log
 
 class Reserva:
 
-    def _init_(self, cliente, servicio, duracion):
+    def __init__(self, cliente, servicio, duracion):
         try:
             if cliente is None:
                 raise ReservaError("El cliente no puede ser nulo")
