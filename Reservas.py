@@ -3,7 +3,7 @@ from logger import registrar_log
 
 class Reserva:
 
-    def __init__(self, cliente, servicio, duracion):
+    def _init_(self, cliente, servicio, duracion):
         try:
             if cliente is None:
                 raise ReservaError("El cliente no puede ser nulo")
@@ -20,7 +20,7 @@ class Reserva:
             self._estado = "pendiente"
             self._costo = 0
 
-        except ReservaError as e:
+        except Exception as e:
             registrar_log(f"Error al crear la reserva: {e}")
             raise
 
@@ -34,7 +34,7 @@ class Reserva:
 
             self._estado = "confirmada"
 
-        except ReservaError as e:
+        except Exception as e:
             registrar_log(f"Error al confirmar: {e}")
             raise
 
@@ -48,7 +48,7 @@ class Reserva:
 
             self._estado = "cancelada"
 
-        except ReservaError as e:
+        except Exception as e:
             registrar_log(f"Error al cancelar: {e}")
             raise
 
@@ -59,14 +59,12 @@ class Reserva:
 
             self._costo = self._servicio.calcular_costo(self._duracion, descuento)
 
-        except ReservaError as e:
+        except Exception as e:
             registrar_log(f"Error al procesar: {e}")
             raise
-
         else:
             self._estado = "confirmada"
             print("Reserva procesada correctamente")
-
         finally:
             print("Proceso finalizado")
 
