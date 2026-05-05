@@ -1,10 +1,8 @@
-import logger
-
-class ReservaError(Exception):
-    pass
-
+from excepciones import ReservaError
+from logger import registrar_log
 
 class Reserva:
+
     def __init__(self, cliente, servicio, duracion):
         try:
             if cliente is None:
@@ -23,9 +21,8 @@ class Reserva:
             self._costo = 0
 
         except ReservaError as e:
-            logger.registrar_error(f"Error al crear la reserva: {e}")
+            registrar_log(f"Error al crear la reserva: {e}")
             raise
-
 
     def confirmar(self):
         try:
@@ -38,9 +35,8 @@ class Reserva:
             self._estado = "confirmada"
 
         except ReservaError as e:
-            logger.registrar_error(f"Error al confirmar: {e}")
+            registrar_log(f"Error al confirmar: {e}")
             raise
-
 
     def cancelar(self):
         try:
@@ -53,22 +49,18 @@ class Reserva:
             self._estado = "cancelada"
 
         except ReservaError as e:
-            logger.registrar_error(f"Error al cancelar: {e}")
+            registrar_log(f"Error al cancelar: {e}")
             raise
 
-
-    def procesar(self):
+    def procesar(self, descuento=0):
         try:
             if self._estado == "cancelada":
                 raise ReservaError("No se puede procesar una reserva cancelada")
 
-            if self._estado == "confirmada":
-                raise ReservaError("La reserva ya fue procesada")
-
-            self._costo = self._servicio.calcular_costo(self._duracion)
+            self._costo = self._servicio.calcular_costo(self._duracion, descuento)
 
         except ReservaError as e:
-            logger.registrar_error(f"Error al procesar la reserva: {e}")
+            registrar_log(f"Error al procesar: {e}")
             raise
 
         else:
@@ -76,12 +68,11 @@ class Reserva:
             print("Reserva procesada correctamente")
 
         finally:
-            print("Proceso de reserva finalizado")
-
+            print("Proceso finalizado")
 
     def mostrar(self):
-        print(f"Cliente: {self._cliente}")
-        print(f"Servicio: {self._servicio}")
+        print(self._cliente.mostrar_info())
+        print(f"Servicio: {self._servicio.descripcion()}")
         print(f"Duración: {self._duracion}")
         print(f"Estado: {self._estado}")
         print(f"Costo: {self._costo}")
